@@ -10,342 +10,686 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light dark;--bg:#f2f3f5;--surface:#fff;--surface-2:#eef0f2;--ink:#161a1e;--ink-2:#4b5560;--ink-3:#7c8791;--line:#dde1e5;--red:#c1272d;--red-dark:#9e1f24;--red-soft:#fdeeee;--amber:#9a6206;--amber-bg:#fdf3e0;--green:#177245;--green-bg:#e6f4ec;--grey-bg:#eef0f2;--input-bg:#fff;--shadow:0 1px 2px rgba(16,24,32,.06),0 8px 24px -12px rgba(16,24,32,.18);--radius:14px}
-@media (prefers-color-scheme:dark){:root{--bg:#101417;--surface:#1a1f24;--surface-2:#22282e;--ink:#f0f3f5;--ink-2:#b6bfc7;--ink-3:#8b96a0;--line:#2e363d;--red:#e5534b;--red-soft:#3a2224;--amber:#e8b34b;--amber-bg:#38300f;--green:#4cc38a;--green-bg:#173527;--grey-bg:#22282e;--input-bg:#12171b}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",system-ui,sans-serif;font-size:16px;line-height:1.45}
-.wrap{max-width:820px;margin:0 auto;padding:18px 16px 56px}
-.alert-strip{display:flex;align-items:center;gap:10px;background:var(--red);color:#fff;border-radius:10px;padding:9px 14px;font-weight:600;font-size:.92rem}
-.alert-strip .date{margin-left:auto;font-weight:500;opacity:.92;font-size:.88rem;white-space:nowrap}
-h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:clamp(2.1rem,7vw,3rem);line-height:1.02;margin:16px 0 6px;text-transform:uppercase}
-.lede{color:var(--ink-2);margin:0 0 14px;max-width:62ch}.lede strong{color:var(--ink)}
-.mode-banner{border-radius:10px;padding:10px 13px;font-weight:700;font-size:.92rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0 8px}
-.mode-banner.demo{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber)}
-.mode-banner.shared{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
-.mode-banner small{font-weight:500}
-.drill-banner{border-radius:10px;padding:11px 13px;font-weight:700;display:flex;justify-content:space-between;gap:10px;background:var(--surface);border:1.5px solid var(--red);margin-bottom:14px;flex-wrap:wrap}
-.drill-banner span:last-child{font-weight:600;color:var(--ink-2);font-size:.9rem}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0 18px}
-.tabbtn{padding:13px 6px;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700;font-family:inherit;cursor:pointer;font-size:.94rem}
-.tabbtn.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.dash{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px 14px;margin-bottom:20px}
-.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.dash-grid.four{grid-template-columns:repeat(4,1fr)}
-@media(max-width:560px){.dash-grid.four{grid-template-columns:repeat(2,1fr)}.tabs{grid-template-columns:repeat(2,1fr)}}
-.stat .num{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:clamp(1.9rem,6vw,2.5rem);line-height:1}.stat .num small{font-size:.55em;color:var(--ink-3)}
-.stat .lbl{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin-top:4px}.stat.accent .num{color:var(--red)}
-.bar{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:14px}.bar>div{height:100%;background:var(--red);transition:width .3s}
-.dash-note{font-size:.88rem;color:var(--ink-2);margin-top:9px}
-.sec-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 10px;flex-wrap:wrap}.sec-head h2{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:1.25rem;margin:0}.sec-head .count{color:var(--ink-3);font-size:.9rem;font-weight:600}.sec-head .hint{margin-left:auto;color:var(--ink-3);font-size:.85rem}
-.list{display:flex;flex-direction:column;gap:10px}.row{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}.row.is-done{border-color:var(--green)}
-.name-input{font-family:"Barlow Semi Condensed",sans-serif;font-weight:600;font-size:1.28rem;letter-spacing:.03em;color:var(--ink);background:transparent;border:1.5px solid transparent;border-bottom:1.5px dashed var(--line);border-radius:8px;padding:3px 6px;width:100%;min-width:0}.name-input:focus{outline:none;border-color:var(--red);background:var(--input-bg)}
-.meta{grid-column:1;font-size:.87rem;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.pill{display:inline-flex;font-size:.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--grey-bg);color:var(--ink-2)}.pill.ok{background:var(--green-bg);color:var(--green)}.pill.short{background:var(--amber-bg);color:var(--amber)}.pill.err{background:var(--red-soft);color:var(--red)}.pill.help{background:var(--red);color:#fff}
-.counter{grid-row:1/span 2;grid-column:2;display:flex;align-items:center;gap:7px}.stepper{width:44px;height:48px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:10px;font-size:1.35rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}.countbox{display:flex;align-items:center;gap:3px}.countbox input{width:58px;height:48px;text-align:center;font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;font-weight:700;color:var(--ink);background:var(--input-bg);border:1.5px solid var(--line);border-radius:10px;padding:0 2px}.countbox input.total-input{width:48px;font-size:1.3rem;color:var(--ink-2)}.countbox .sep{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem;color:var(--ink-3)}
-.row-actions{grid-column:2;justify-self:end;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.allbtn,.removebtn,.submitbtn{background:none;border:none;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;padding:2px 0}.allbtn,.submitbtn{color:var(--red)}.removebtn{color:var(--ink-3)}.removebtn.armed{color:var(--red)}
-.toggle{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--ink-2)}.toggle input{position:absolute;opacity:0;width:0;height:0}.track{width:38px;height:22px;border-radius:99px;background:var(--line);position:relative;flex:none}.track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.3)}.toggle input:checked+.track{background:var(--red)}.toggle input:checked+.track::after{left:19px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 0}.btn{font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;border-radius:11px;padding:12px 16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:inline-flex;align-items:center;gap:8px;justify-content:center}.btn.primary{background:var(--red);border-color:var(--red);color:#fff;flex:1;min-width:180px}.btn.dark{background:var(--ink);color:var(--bg)}
-.summary-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-top:24px;overflow:hidden}.summary-head{display:flex;padding:13px 16px;border-bottom:1px solid var(--line);align-items:center}.summary-head h2{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;font-size:1.2rem;margin:0}.summary-head span{margin-left:auto;font-size:.83rem;color:var(--ink-3)}pre.report{margin:0;padding:14px 16px;font-family:ui-monospace,Menlo,monospace;font-size:.92rem;line-height:1.65;white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto}.summary-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
-.field{margin-bottom:14px}.field label{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px}.field input[type=text],.field select,.field textarea{width:100%;padding:13px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--ink);font-family:inherit;font-size:1rem}.field textarea{min-height:74px}
-.choice-grid{display:grid;gap:9px}.choice{border:1.5px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}.choice input{margin-top:3px;accent-color:var(--red);width:20px;height:20px;flex:none}.choice strong{display:block}.choice span{color:var(--ink-2);font-size:.9rem}.choice:has(input:checked){border-color:var(--red);background:var(--red-soft)}
-.inline3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}@media(max-width:560px){.inline3{grid-template-columns:1fr}}
-.help-banner{background:var(--red);color:#fff;border-radius:12px;padding:14px;margin-bottom:14px}.help-banner h3{margin:0 0 8px}
-.report-item{border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:9px;background:var(--surface)}.report-item.help{border-color:var(--red);background:var(--red-soft)}
-.group-title{font-family:"Barlow Condensed",sans-serif;font-size:1.15rem;text-transform:uppercase;letter-spacing:.04em;margin:18px 0 8px}
-.status-btns{display:flex;flex-wrap:wrap;gap:8px}.status-btns button{padding:10px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700;cursor:pointer;font-family:inherit}.status-btns button.active{background:var(--red);color:#fff;border-color:var(--red)}
-.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,90px);background:var(--ink);color:var(--bg);font-weight:600;padding:12px 20px;border-radius:99px;transition:transform .25s;z-index:50;max-width:calc(100vw - 32px);text-align:center}.toast.show{transform:translate(-50%,0)}
-.codebox{background:#111827;color:#e5e7eb;padding:13px;border-radius:10px;overflow:auto;font-size:.75rem;line-height:1.5;white-space:pre;max-height:320px}
-.foot-note{font-size:.87rem;color:var(--ink-2);margin:14px 2px 0}.empty-note{color:var(--ink-3);font-size:.92rem}
-[hidden]{display:none!important}
-@media(max-width:520px){.wrap{padding:14px 12px 48px}.stepper{width:38px;height:46px}.countbox input{width:50px;height:46px}.countbox input.total-input{width:42px}}
+  :root{
+    color-scheme: light dark;
+    --bg:#f2f3f5;
+    --surface:#ffffff;
+    --surface-2:#eef0f2;
+    --ink:#161a1e;
+    --ink-2:#4b5560;
+    --ink-3:#7c8791;
+    --line:#dde1e5;
+    --red:#c1272d;
+    --red-dark:#9e1f24;
+    --red-soft:#fdeeee;
+    --amber:#9a6206;
+    --amber-bg:#fdf3e0;
+    --green:#177245;
+    --green-bg:#e6f4ec;
+    --grey-bg:#eef0f2;
+    --input-bg:#ffffff;
+    --shadow:0 1px 2px rgba(16,24,32,.06),0 8px 24px -12px rgba(16,24,32,.18);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#101417;
+      --surface:#1a1f24;
+      --surface-2:#22282e;
+      --ink:#f0f3f5;
+      --ink-2:#b6bfc7;
+      --ink-3:#8b96a0;
+      --line:#2e363d;
+      --red:#e5534b;
+      --red-dark:#e5534b;
+      --red-soft:#3a2224;
+      --amber:#e8b34b;
+      --amber-bg:#38300f;
+      --green:#4cc38a;
+      --green-bg:#173527;
+      --grey-bg:#22282e;
+      --input-bg:#12171b;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.45;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:20px 16px 56px}
+
+  /* ---------- Header ---------- */
+  .alert-strip{
+    display:flex;align-items:center;gap:10px;
+    background:var(--red);color:#fff;border-radius:10px;
+    padding:9px 14px;font-weight:600;font-size:.92rem;letter-spacing:.01em;
+  }
+  .alert-strip svg{flex:none}
+  .alert-strip .date{margin-left:auto;font-weight:500;opacity:.92;font-size:.88rem;white-space:nowrap}
+  h1{
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;
+    font-size:clamp(2.1rem,7vw,3rem);line-height:1.02;letter-spacing:.01em;
+    margin:18px 0 6px;text-transform:uppercase;
+  }
+  .lede{color:var(--ink-2);font-size:1.02rem;margin:0 0 20px;max-width:56ch}
+  .lede strong{color:var(--ink)}
+
+  /* ---------- Summary dashboard ---------- */
+  .dash{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:16px 18px 14px;margin-bottom:22px;
+  }
+  .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stat .num{
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;
+    font-size:clamp(1.9rem,6vw,2.5rem);line-height:1;font-variant-numeric:tabular-nums;
+  }
+  .stat .num small{font-size:.55em;color:var(--ink-3);font-weight:600}
+  .stat .lbl{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin-top:4px}
+  .stat.accent .num{color:var(--red)}
+  .bar{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar > div{height:100%;width:0%;background:var(--red);border-radius:99px;transition:width .3s ease}
+  .dash-note{font-size:.88rem;color:var(--ink-2);margin-top:9px}
+  .dash-note strong{color:var(--ink)}
+
+  /* ---------- Sections ---------- */
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 10px}
+  .sec-head h2{
+    font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;
+    letter-spacing:.05em;font-size:1.25rem;margin:0;
+  }
+  .sec-head .count{color:var(--ink-3);font-size:.9rem;font-weight:600}
+  .sec-head .hint{margin-left:auto;color:var(--ink-3);font-size:.85rem;text-align:right}
+
+  .list{display:flex;flex-direction:column;gap:10px}
+  .row{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:13px 14px;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;
+  }
+  .row.is-done{border-color:var(--green)}
+  .name-input{
+    font-family:"Barlow Semi Condensed",sans-serif;font-weight:600;
+    font-size:1.28rem;letter-spacing:.03em;line-height:1.1;color:var(--ink);
+    background:transparent;border:1.5px solid transparent;border-bottom:1.5px dashed var(--line);
+    border-radius:8px;padding:3px 6px;width:100%;min-width:0;
+  }
+  .name-input:focus{outline:none;border-color:var(--red);background:var(--input-bg)}
+  .name-input::placeholder{color:var(--ink-3)}
+  .meta{grid-column:1;font-size:.87rem;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--grey-bg);color:var(--ink-2)}
+  .pill.ok{background:var(--green-bg);color:var(--green)}
+  .pill.short{background:var(--amber-bg);color:var(--amber)}
+  .pill.err{background:var(--red-soft);color:var(--red)}
+  .pill.noclass{background:var(--grey-bg);color:var(--ink-2)}
+
+  .counter{grid-row:1 / span 2;grid-column:2;display:flex;align-items:center;gap:7px}
+  .stepper{
+    width:44px;height:48px;border:1px solid var(--line);background:var(--surface-2);
+    color:var(--ink);border-radius:10px;font-size:1.35rem;font-weight:600;line-height:1;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
+    -webkit-tap-highlight-color:transparent;user-select:none;
+  }
+  .stepper:active{background:var(--line)}
+  .stepper:disabled{opacity:.35;cursor:default}
+  .countbox{display:flex;align-items:center;gap:3px}
+  .countbox input{
+    width:58px;height:48px;text-align:center;
+    font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;font-weight:700;
+    font-variant-numeric:tabular-nums;color:var(--ink);
+    background:var(--input-bg);border:1.5px solid var(--line);border-radius:10px;padding:0 2px;
+    -moz-appearance:textfield;appearance:textfield;
+  }
+  .countbox input::-webkit-outer-spin-button,.countbox input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .countbox input:focus{outline:none;border-color:var(--red)}
+  .countbox input::placeholder{color:var(--ink-3)}
+  .countbox .sep{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem;font-weight:600;color:var(--ink-3)}
+  .countbox input.total-input{
+    width:48px;font-size:1.3rem;font-weight:600;color:var(--ink-2);
+  }
+  .countbox input.total-input:focus{color:var(--ink)}
+  .countbox input:disabled{opacity:.55}
+  .row-actions{grid-column:2;justify-self:end;display:flex;gap:16px;align-items:center}
+  .allbtn{
+    background:none;border:none;color:var(--red);
+    font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;padding:2px 0;
+  }
+  .allbtn:disabled{color:var(--ink-3);cursor:default}
+  .removebtn{
+    background:none;border:none;color:var(--ink-3);
+    font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;padding:2px 0;
+  }
+  .removebtn.armed{color:var(--red)}
+  .empty-note{color:var(--ink-3);font-size:.92rem;margin:2px}
+
+  /* no-class toggle */
+  .toggle{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--ink-2)}
+  .toggle input{position:absolute;opacity:0;width:0;height:0}
+  .track{width:38px;height:22px;border-radius:99px;background:var(--line);position:relative;transition:background .15s;flex:none}
+  .track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .15s}
+  .toggle input:checked + .track{background:var(--red)}
+  .toggle input:checked + .track::after{left:19px}
+  .toggle input:focus-visible + .track{outline:2px solid var(--red);outline-offset:2px}
+  .row.noclass .counter{opacity:.45}
+
+  /* ---------- Actions & summary ---------- */
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
+  .btn{
+    font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;
+    border-radius:11px;padding:12px 18px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff;flex:1;justify-content:center;min-width:200px;padding:14px 18px;font-size:1.02rem}
+  .btn.primary:active{background:var(--red-dark)}
+  .summary-box{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);margin-top:26px;overflow:hidden;
+  }
+  .summary-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line)}
+  .summary-head h2{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:1.2rem;margin:0}
+  .summary-head span{margin-left:auto;font-size:.83rem;color:var(--ink-3)}
+  pre.report{
+    margin:0;padding:14px 16px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:.92rem;line-height:1.65;white-space:pre-wrap;word-break:break-word;color:var(--ink);
+    max-height:420px;overflow:auto;
+  }
+  .summary-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
+  .foot-note{font-size:.87rem;color:var(--ink-2);margin:14px 2px 0}
+
+  .toast{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,80px);
+    background:var(--ink);color:var(--bg);font-weight:600;font-size:.95rem;
+    padding:12px 20px;border-radius:99px;box-shadow:0 10px 30px rgba(0,0,0,.3);
+    transition:transform .25s ease;z-index:50;max-width:calc(100vw - 32px);text-align:center;
+  }
+  .toast.show{transform:translate(-50%,0)}
+
+  @media (max-width:520px){
+    .wrap{padding:14px 12px 48px}
+    .counter{gap:5px}
+    .stepper{width:38px;height:46px}
+    .countbox input{width:50px;height:46px}
+    .countbox input.total-input{width:42px}
+    .dash-grid{gap:8px}
+    .sec-head .hint{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bar > div,.toast,.track,.track::after{transition:none}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="alert-strip"><span>Fire drill — attendance</span><span class="date" id="drillDate"></span></div>
+
+  <div class="alert-strip" role="note">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+    <span style="white-space:nowrap">Fire drill — attendance</span>
+    <span class="date" id="drillDate"></span>
+  </div>
+
   <h1>Fire Drill Attendance</h1>
-  <p class="lede">Teachers submit a class headcount, students self-report from a link with no login, and coordinators see who is still missing — all feeding one shared view when a Google Sheet backend is connected in <strong>Settings</strong>.</p>
+  <p class="lede">Class Advisors: enter the number of students <strong>present at the assembly point</strong> for your class, then tap <strong>Copy summary</strong> at the bottom and paste it into the group chat. Class names and class sizes are editable — tap a name or the number after the “/” to change it, and use <strong>Add class</strong> or <strong>Remove</strong> to adjust the list.</p>
 
-  <div id="modeBanner" class="mode-banner demo">Demo — not shared yet <small>Entries stay on this phone only. Add the Google Sheet backend in Settings to share across phones.</small></div>
-  <div class="drill-banner"><span id="drillStatusLabel">Drill in progress</span><span id="lastUpdated">Not refreshed yet</span></div>
-
-  <nav class="tabs" aria-label="Views">
-    <button class="tabbtn" data-view="teacher" type="button">Teacher</button>
-    <button class="tabbtn" data-view="student" type="button">Student</button>
-    <button class="tabbtn" data-view="dashboard" type="button">Coordinator</button>
-    <button class="tabbtn" data-view="settings" type="button">Settings</button>
-  </nav>
-
-  <main id="view-teacher">
-    <section class="dash" aria-label="Attendance totals">
-      <div class="dash-grid">
-        <div class="stat accent"><div class="num"><span id="statPresent">0</span><small> / <span id="statExpected">211</span></small></div><div class="lbl">Students present</div></div>
-        <div class="stat"><div class="num"><span id="statReported">0</span><small> / <span id="statReportedTotal">8</span></small></div><div class="lbl">Classes reported</div></div>
-        <div class="stat"><div class="num" id="statAbsent">—</div><div class="lbl">Absent (reported)</div></div>
+  <section class="dash" aria-label="Attendance totals so far">
+    <div class="dash-grid">
+      <div class="stat accent">
+        <div class="num"><span id="statPresent">0</span><small> / <span id="statExpected">211</span></small></div>
+        <div class="lbl">Students present</div>
       </div>
-      <div class="bar"><div id="progressBar"></div></div>
-      <div class="dash-note" id="dashNote">No classes reported yet — start with your class below.</div>
-    </section>
-    <div class="sec-head"><h2>Classes in session</h2><span class="count" id="sessionCount"></span><span class="hint">Tap a name or size to edit · Submit sends it to the shared store</span></div>
-    <div class="list" id="sessionList"></div><p class="empty-note" id="sessionEmpty" hidden>No classes in session — add one below, or turn off “No class” on a class.</p>
-    <div class="sec-head"><h2>No class this session</h2><span class="count" id="noclassCount"></span><span class="hint">Pre-filled 0</span></div>
-    <div class="list" id="noclassList"></div><p class="empty-note" id="noclassEmpty" hidden>No classes marked “No class”.</p>
-    <div class="actions">
-      <button class="btn" id="addClassBtn" type="button">+ Add class</button>
-      <button class="btn" id="allPresentBtn" type="button">Mark all present</button>
-      <button class="btn" id="submitAllBtn" type="button">Submit all reported</button>
-      <button class="btn" id="clearBtn" type="button">Clear counts</button>
-    </div>
-    <section class="summary-box">
-      <div class="summary-head"><h2>Summary for the group chat</h2><span>Updates as you type</span></div>
-      <pre class="report" id="reportText"></pre>
-      <div class="summary-foot"><button class="btn primary" id="copyBtn" type="button">Copy summary</button></div>
-    </section>
-    <p class="foot-note" id="teacherShareNote">Demo mode: this summary is generated on this phone only. Connect the Sheet in Settings, then use Submit on each class so other phones see the same totals.</p>
-  </main>
-
-  <main id="view-student" hidden>
-    <div class="card" id="studentFormCard">
-      <h2 style="margin-top:0;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.04em">Student self-report</h2>
-      <p style="color:var(--ink-2);margin-top:0">No login, no install. Takes under 30 seconds. Only send this during the drill. Student link: open this app with <strong>?view=student</strong> at the end of the link, or tap Student above.</p>
-      <form id="studentForm">
-        <div class="field"><label for="stuClass">Your class</label><select id="stuClass" required></select></div>
-        <div class="field"><label for="stuName">Your full name</label><input type="text" id="stuName" placeholder="e.g. Alex Tan" autocomplete="name" required></div>
-        <div class="field"><label>Where are you now?</label>
-          <div class="choice-grid">
-            <label class="choice"><input type="radio" name="stuStatus" value="safe" checked><span><strong>Safe at assembly point</strong><span style="display:block">I am with my class at the assembly point.</span></span></label>
-            <label class="choice"><input type="radio" name="stuStatus" value="inside"><span><strong>Still inside</strong><span style="display:block">I am still in the building — add building / floor / room below.</span></span></label>
-            <label class="choice"><input type="radio" name="stuStatus" value="need_help"><span><strong>Need help</strong><span style="display:block">I need staff help now. This stays highlighted for coordinators until resolved.</span></span></label>
-          </div>
-        </div>
-        <div class="field" id="assemblyField"><label for="stuAssembly">Assembly point</label><select id="stuAssembly"><option>Field</option><option>Main Gate</option><option>Hall</option><option>Carpark A</option><option>Basketball Court</option></select></div>
-        <div id="insideFields" hidden>
-          <div class="inline3">
-            <div class="field"><label for="stuBuilding">Building</label><input type="text" id="stuBuilding" placeholder="e.g. Block B"></div>
-            <div class="field"><label for="stuFloor">Floor</label><input type="text" id="stuFloor" placeholder="e.g. Level 3"></div>
-            <div class="field"><label for="stuRoom">Room</label><input type="text" id="stuRoom" placeholder="e.g. Room 3-05"></div>
-          </div>
-        </div>
-        <div class="field"><label for="stuNote">Note (optional)</label><textarea id="stuNote" placeholder="e.g. With another class, injured ankle, waiting with a friend…"></textarea></div>
-        <div class="field"><label>Location (optional, one-time only)</label>
-          <button type="button" class="btn" id="locBtn" style="width:100%">Share my location once</button>
-          <p id="locStatus" style="font-size:.88rem;color:var(--ink-2);margin:7px 0 0">Not shared. If you tap, only your location at that moment is attached — no continuous tracking, no location history.</p>
-        </div>
-        <button type="submit" class="btn primary" style="width:100%">Send my report</button>
-      </form>
-    </div>
-    <div class="card" id="studentDone" hidden>
-      <h2 style="margin-top:0">Report received</h2>
-      <p id="studentDoneText"></p>
-      <p><strong>Current drill status:</strong> <span id="studentDrillStatus"></span></p>
-      <p style="color:var(--ink-2)">Stay where you are if you reported “Still inside” or “Need help”, unless staff tell you to move. If you reach the assembly point, send a new report.</p>
-      <button class="btn" id="studentAgainBtn" type="button">Send another / update report</button>
-    </div>
-    <p class="foot-note">Privacy: only your class, name, status, assembly point or building / floor / room, optional one-time location, note and time are collected. Students see only this confirmation and the general drill status — not other students’ reports.</p>
-  </main>
-
-  <main id="view-dashboard" hidden>
-    <section class="dash">
-      <div class="dash-grid four">
-        <div class="stat"><div class="num" id="dExpected">0</div><div class="lbl">Expected</div></div>
-        <div class="stat accent"><div class="num" id="dAccounted">0</div><div class="lbl">Accounted for</div></div>
-        <div class="stat"><div class="num" id="dMissing">0</div><div class="lbl">Missing</div></div>
-        <div class="stat"><div class="num" id="dUnsubmitted">0</div><div class="lbl">Classes not submitted</div></div>
+      <div class="stat">
+        <div class="num"><span id="statReported">0</span><small> / <span id="statReportedTotal">8</span></small></div>
+        <div class="lbl">Classes reported</div>
       </div>
-      <div class="dash-note" id="dNote">—</div>
-      <div class="actions" style="margin-top:12px">
-        <button class="btn dark" id="refreshDashBtn" type="button">Refresh now</button>
-        <button class="btn" id="autoRefreshBtn" type="button">Auto-refresh: On (15s)</button>
-      </div>
-    </section>
-    <div class="card">
-      <h3 style="margin-top:0">Drill status — shown in Teacher &amp; Student views</h3>
-      <div class="status-btns" id="statusBtns">
-        <button data-status="Drill in progress" type="button">Drill in progress</button>
-        <button data-status="Search in progress" type="button">Search in progress</button>
-        <button data-status="All accounted for" type="button">All accounted for</button>
-        <button data-status="All clear" type="button">All clear</button>
+      <div class="stat">
+        <div class="num" id="statAbsent">—</div>
+        <div class="lbl">Absent (reported classes)</div>
       </div>
     </div>
-    <div id="helpSection"></div>
-    <h2 class="group-title">Missing &amp; student reports — by class</h2>
-    <div id="missingList"></div>
-    <h2 class="group-title">Classes not yet submitted</h2>
-    <div id="unsubmittedList"></div>
-    <p class="foot-note">The app supports the search — it does not replace a physical headcount or a physical search. A student marked safe here still needs a physical check at the assembly point. “Mark resolved” in Phase 1 marks the entry resolved on the coordinator’s screen for this drill; archive the Sheet rows after the drill.</p>
-  </main>
+    <div class="bar" aria-hidden="true"><div id="progressBar"></div></div>
+    <div class="dash-note" id="dashNote">No classes reported yet — start with your class below.</div>
+  </section>
 
-  <main id="view-settings" hidden>
-    <div class="card">
-      <h2 style="margin-top:0;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase">Shared store — Google Sheet</h2>
-      <p style="color:var(--ink-2)">Paste the Google Apps Script Web App URL for your shared sheet. When it is set, teacher submissions and student reports go to that Sheet and the dashboard reads from it (GET returns <em>drillStatus, classes, teacher, students</em>). Until then the app stays in <strong>Demo — not shared yet</strong> mode and never claims entries are shared.</p>
-      <div class="field"><label for="backendUrl">Apps Script Web App URL (Settings field)</label><input type="text" id="backendUrl" placeholder="https://script.google.com/macros/s/…/exec"></div>
-      <div style="display:flex;gap:9px;flex-wrap:wrap">
-        <button class="btn primary" id="connectBtn" type="button" style="flex:none">Connect</button>
-        <button class="btn" id="testBtn" type="button">Test connection</button>
-        <button class="btn" id="disconnectBtn" type="button">Disconnect</button>
-      </div>
-      <p id="backendStatus" style="font-weight:700;margin-bottom:0">Status: Demo — not shared yet</p>
-      <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
-      <h3>Set up the Sheet (one time, sheet owner only)</h3>
-      <ol style="padding-left:20px;color:var(--ink-2)">
-        <li>Create a Google Sheet. Tabs are created by the script if missing: <strong>Classes</strong> (Class, Total, NoClass, Note, AssemblyPoint), <strong>TeacherSubmissions</strong>, <strong>StudentReports</strong>, <strong>DrillStatus</strong>.</li>
-        <li>Extensions → Apps Script, paste the bridge script below (same as <em>fire-drill-shared/Code.gs</em>), Save.</li>
-        <li>Deploy → New deployment → Web app → Execute as: Me, Who has access: Anyone → Deploy, copy the Web App URL ending in /exec.</li>
-        <li>Paste that URL above and tap Connect. The banner should change to “Shared — connected to Google Sheet”. Student link: same app link + <strong>?view=student</strong> (add &amp;backend=URL if you bookmark it that way).</li>
-      </ol>
-      <button class="btn" id="copyScriptBtn" type="button">Copy Apps Script</button>
-      <pre class="codebox" id="scriptCode">Bridge contract (full script is in fire-drill-shared/Code.gs):
-POST {type:"teacher", className, total, present, submittedBy}
-POST {type:"student", name, className, status:"safe|inside|need_help",
-      assemblyPoint, building, floor, room, note, lat, lng, accuracy}
-POST {type:"status", status}
-GET  -> {drillStatus, classes:[], teacher:[], students:[]}
-Sheet tabs: Classes | TeacherSubmissions | StudentReports | DrillStatus
-Deploy as Web app, Execute as Me, Access: Anyone, then paste the /exec URL above.</pre>
-      <p class="foot-note">This setting is kept in this browser session only in this static app — paste the URL again after a reload, or add it as <strong>?backend=YOUR_URL</strong> to your bookmarked link. No data is sent anywhere in demo mode.</p>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Privacy &amp; data collected</h3>
-      <p style="color:var(--ink-2);margin-bottom:0">Only: class, count, student name (self-report only), status, assembly point / building-floor-room, optional one-time location, note, and time. No continuous tracking. No location history. Only staff should open the Coordinator view — students see only their own confirmation and the general drill status.</p>
-    </div>
-  </main>
+  <div class="sec-head">
+    <h2>Classes in session</h2>
+    <span class="count" id="sessionCount">8 classes · 211 students</span>
+    <span class="hint">Tap + / − or type the count · names &amp; sizes editable</span>
+  </div>
+  <div class="list" id="sessionList"></div>
+  <p class="empty-note" id="sessionEmpty" hidden>No classes in session — add one below, or turn off “No class” on a class.</p>
 
-  <p class="foot-note">Each teacher submits their own class; the Coordinator dashboard combines teacher counts with student self-reports. In demo mode everything is local to this phone for trying the flow.</p>
+  <div class="sec-head">
+    <h2>No class this session</h2>
+    <span class="count" id="noclassCount">5 classes</span>
+    <span class="hint">Pre-filled 0 — turn off “No class” only if your class is in</span>
+  </div>
+  <div class="list" id="noclassList"></div>
+  <p class="empty-note" id="noclassEmpty" hidden>No classes marked “No class”.</p>
+
+  <div class="actions">
+    <button type="button" class="btn" id="addClassBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+      Add class
+    </button>
+    <button type="button" class="btn" id="allPresentBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+      Mark all present
+    </button>
+    <button type="button" class="btn" id="clearBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Clear counts
+    </button>
+  </div>
+
+  <section class="summary-box" aria-label="Summary to send to the group chat">
+    <div class="summary-head">
+      <h2>Summary for the group chat</h2>
+      <span>Updates as you type</span>
+    </div>
+    <pre class="report" id="reportText"></pre>
+    <div class="summary-foot">
+      <button type="button" class="btn primary" id="copyBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        Copy summary
+      </button>
+    </div>
+  </section>
+  <p class="foot-note">Each person filling this in sees their own copy of the form — copy the summary and paste it into the group chat so everyone’s counts land in one place.</p>
+
 </div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
-"use strict";
-var CLASSES=[
- {code:"AM2501K",total:31,noClass:false},{code:"AM2501L",total:33,noClass:true,note:"L1 AM no class"},
- {code:"AM2501M",total:30,noClass:false},{code:"AM2501Y",total:23,noClass:false},{code:"AM2501Z",total:31,noClass:false},
- {code:"AM2501S",total:9,noClass:false},{code:"AM2601A",total:37,noClass:false},{code:"AM2601B",total:37,noClass:false},
- {code:"AM2601C",total:33,noClass:true,note:"AM no class"},{code:"AM2601D",total:38,noClass:true,note:"AM no class"},
- {code:"AM2601E",total:37,noClass:true,note:"AM no class"},{code:"AM2601F",total:41,noClass:true,note:"AM no class"},
- {code:"AM2601R",total:13,noClass:false}
-];
-var uid=0; CLASSES.forEach(function(c){c.id=++uid;c.present=c.noClass?0:null;c.isNoClass=c.noClass;c.submitted=false;});
-var studentReports=[]; var resolvedKeys={}; var drillStatus="Drill in progress"; var backendUrl=""; var isShared=false; var autoRefresh=true; var sharedLoc=null;
-var $=function(id){return document.getElementById(id)};
-$("drillDate").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});
-function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!==undefined)e.textContent=txt;return e}
-function displayName(c){return (c.code||"").trim()||"Unnamed class"}
-function showToast(m){var t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},3400)}
-function placeOf(r){if(r.status==="safe")return r.assemblyPoint||"Assembly point";var p=[r.building,r.floor,r.room].filter(Boolean).join(" · ");return p||"Inside — no room given"}
-function statusLabel(s){return s==="safe"?"Safe at assembly point":s==="inside"?"Still inside":s==="need_help"?"Need help":s}
-function reportKey(r){return (r.name||"")+"|"+(r.classCode||"")+"|"+(r.time||"")+"|"+(r.status||"")}
-function isResolved(r){return !!r.resolved||!!resolvedKeys[reportKey(r)]}
-function updateMode(){var b=$("modeBanner");if(isShared){b.className="mode-banner shared";b.innerHTML="";b.appendChild(el("span","","Shared — connected to Google Sheet"));var s=el("small","","Submissions go to your Sheet and other phones can see them on refresh.");b.appendChild(s);$("backendStatus").textContent="Status: Shared — connected to Google Sheet";$("teacherShareNote").textContent="Shared mode: use Submit on each class — the count is sent to the Google Sheet (TeacherSubmissions).";}else{b.className="mode-banner demo";b.innerHTML="";b.appendChild(el("span","","Demo — not shared yet"));b.appendChild(el("small","","Entries stay on this phone only. Add the Google Sheet backend in Settings to share across phones."));$("backendStatus").textContent="Status: Demo — not shared yet";}}
-function postBackend(payload){if(!isShared)return Promise.resolve({demo:true});return fetch(backendUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).catch(function(){showToast("Could not reach the Sheet — kept on this phone for now.");return{}})}
-function applySharedState(d){
- if(!d)return;
- if(d.drillStatus)drillStatus=String(d.drillStatus);
- if(Array.isArray(d.teacher)){d.teacher.forEach(function(row){var name=String(row.Class||row.className||"");var c=CLASSES.find(function(x){return displayName(x)===name});if(c){var p=parseInt(row.Present,10);if(!isNaN(p)){c.present=p;c.submitted=true}var tt=parseInt(row.Total,10);if(!isNaN(tt)&&tt>=1)c.total=tt}})}
- if(Array.isArray(d.students)){studentReports=d.students.map(function(row){var r={name:String(row.Name||row.name||""),classCode:String(row.Class||row.className||""),status:String(row.Status||row.status||""),assemblyPoint:String(row.AssemblyPoint||row.assemblyPoint||""),building:String(row.Building||""),floor:String(row.Floor||""),room:String(row.Room||""),note:String(row.Note||""),lat:row.Lat!==""&&row.Lat!=null?Number(row.Lat):null,lng:row.Lng!==""&&row.Lng!=null?Number(row.Lng):null,time:row.Timestamp||row.time||new Date().toISOString()};if(isNaN(r.lat))r.lat=null;if(isNaN(r.lng))r.lng=null;return r})}
- $("lastUpdated").textContent="Refreshed "+new Date().toLocaleTimeString();
-}
-function fetchBackend(){if(!isShared){renderDashboard();return Promise.resolve()}return fetch(backendUrl).then(function(r){return r.json()}).then(function(d){applySharedState(d);refresh()}).catch(function(){$("lastUpdated").textContent="Refresh failed — showing local data";renderDashboard()})}
-var currentView="teacher";
-function showView(v){currentView=v;["teacher","student","dashboard","settings"].forEach(function(n){$("view-"+n).hidden=n!==v});document.querySelectorAll(".tabbtn").forEach(function(b){b.classList.toggle("active",b.dataset.view===v)});if(v==="dashboard")renderDashboard();if(v==="student")populateStudentClasses();try{var q="?view="+v;if(backendUrl)q+="&backend="+encodeURIComponent(backendUrl);history.replaceState(null,"",q)}catch(e){}}
-document.querySelectorAll(".tabbtn").forEach(function(b){b.addEventListener("click",function(){showView(b.dataset.view)})});
-var sessionList=$("sessionList"),noclassList=$("noclassList");
-function buildRow(c){
- var row=el("div","row");row.id="row-"+c.id;
- var nameInput=document.createElement("input");nameInput.type="text";nameInput.className="name-input";nameInput.value=c.code;nameInput.placeholder="Class name";nameInput.setAttribute("aria-label","Class name");row.appendChild(nameInput);
- var counter=el("div","counter");var minus=el("button","stepper","−");minus.type="button";
- var countbox=el("div","countbox");var input=document.createElement("input");input.type="number";input.inputMode="numeric";input.placeholder="–";
- var totalInput=document.createElement("input");totalInput.type="number";totalInput.inputMode="numeric";totalInput.className="total-input";totalInput.value=String(c.total);
- countbox.appendChild(input);countbox.appendChild(el("span","sep","/"));countbox.appendChild(totalInput);
- var plus=el("button","stepper","+");plus.type="button";counter.appendChild(minus);counter.appendChild(countbox);counter.appendChild(plus);row.appendChild(counter);
- var meta=el("div","meta");var status=el("span","pill","Awaiting count");meta.appendChild(status);
- var label=el("label","toggle");var cb=document.createElement("input");cb.type="checkbox";cb.checked=c.isNoClass;label.appendChild(cb);label.appendChild(el("span","track"));label.appendChild(document.createTextNode("No class"));meta.appendChild(label);
- if(c.note){var n=el("span","","("+c.note+")");n.style.color="var(--ink-3)";meta.appendChild(n)}row.appendChild(meta);
- var actions=el("div","row-actions");
- var allBtn=el("button","allbtn","All present");allBtn.type="button";allBtn.addEventListener("click",function(){c.present=c.total;c.submitted=false;refresh()});
- var submitBtn=el("button","submitbtn","Submit");submitBtn.type="button";submitBtn.addEventListener("click",function(){submitClass(c)});
- var removeBtn=el("button","removebtn","Remove");removeBtn.type="button";
- actions.appendChild(allBtn);actions.appendChild(submitBtn);actions.appendChild(removeBtn);row.appendChild(actions);
- c.rowEl=row;c.nameEl=nameInput;c.inputEl=input;c.totalEl=totalInput;c.statusEl=status;c.minusEl=minus;c.plusEl=plus;c.allBtnEl=allBtn;c.submitEl=submitBtn;c.removeEl=removeBtn;c.toggleEl=cb;
- nameInput.addEventListener("input",function(){c.code=nameInput.value;refresh(true);populateStudentClasses()});
- totalInput.addEventListener("input",function(){var v=parseInt(totalInput.value,10);if(!isNaN(v)&&v>=1)c.total=v;refresh(true)});
- cb.addEventListener("change",function(){c.isNoClass=cb.checked;if(c.isNoClass)c.present=0;else if(c.present===0)c.present=null;c.submitted=false;renderLists();refresh()});
- var armed=false,timer=null;removeBtn.addEventListener("click",function(){if(!armed){armed=true;removeBtn.textContent="Tap again to remove";removeBtn.classList.add("armed");timer=setTimeout(function(){armed=false;removeBtn.textContent="Remove";removeBtn.classList.remove("armed")},3000);return}clearTimeout(timer);var idx=CLASSES.indexOf(c);if(idx>=0)CLASSES.splice(idx,1);if(row.parentNode)row.parentNode.removeChild(row);renderLists();refresh();populateStudentClasses()});
- minus.addEventListener("click",function(){c.present=Math.max(0,(c.present===null?c.total:c.present)-1);c.submitted=false;refresh()});
- plus.addEventListener("click",function(){c.present=Math.min(c.total,(c.present===null?0:c.present)+1);c.submitted=false;refresh()});
- input.addEventListener("input",function(){var raw=input.value.trim();c.present=raw===""?null:parseInt(raw,10);if(isNaN(c.present))c.present=null;c.submitted=false;refresh(true)});
- (c.isNoClass?noclassList:sessionList).appendChild(row);
-}
-function submitClass(c){if(c.present===null&&!c.isNoClass){showToast("Enter a count for "+displayName(c)+" first.");return}c.submitted=true;c.submittedAt=new Date();postBackend({type:"teacher",className:displayName(c),total:c.total,present:c.isNoClass?0:c.present,submittedBy:""});refresh();showToast(isShared?("Submitted "+displayName(c)+" to the shared Sheet."):("Saved "+displayName(c)+" on this phone — Demo, not shared yet."))}
-CLASSES.forEach(buildRow);
-function renderLists(){CLASSES.forEach(function(c){(c.isNoClass?noclassList:sessionList).appendChild(c.rowEl)});$("sessionEmpty").hidden=sessionList.children.length>0;$("noclassEmpty").hidden=noclassList.children.length>0}
-function sessionClasses(){return CLASSES.filter(function(c){return !c.isNoClass})}
-function refresh(fromTyping){
- var presentTotal=0,expectedTotal=0,reported=0,absentTotal=0;
- CLASSES.forEach(function(c){var input=c.inputEl,status=c.statusEl,row=c.rowEl;if(document.activeElement!==c.totalEl)c.totalEl.value=String(c.total);
-  if(c.isNoClass){input.value="0";input.disabled=true;c.totalEl.disabled=true;c.minusEl.disabled=true;c.plusEl.disabled=true;c.allBtnEl.disabled=true;status.className="pill";status.textContent=c.submitted?"No class · Submitted":"No class";row.classList.remove("is-done");c.submitEl.textContent=c.submitted?"Submitted ✓":"Submit";return}
-  input.disabled=false;c.totalEl.disabled=false;expectedTotal+=c.total;
-  if(c.present===null){if(!fromTyping||document.activeElement!==input)input.value="";status.className="pill";status.textContent="Awaiting count";row.classList.remove("is-done");c.minusEl.disabled=false;c.plusEl.disabled=false;c.submitEl.textContent="Submit"}
-  else{var v=c.present;if(document.activeElement!==input)input.value=String(v);reported++;presentTotal+=Math.min(Math.max(v,0),c.total);
-   if(v>c.total){status.className="pill err";status.textContent="Over class size — max "+c.total}
-   else if(v===c.total){status.className="pill ok";status.textContent=c.submitted?"All present · Submitted":"All present";row.classList.add("is-done")}
-   else{absentTotal+=(c.total-v);status.className="pill short";status.textContent=(c.total-v)+" absent"+(c.submitted?" · Submitted":"");row.classList.remove("is-done")}
-   c.minusEl.disabled=v<=0;c.plusEl.disabled=v>=c.total;c.allBtnEl.disabled=v===c.total;c.submitEl.textContent=c.submitted?"Submitted ✓":"Submit"}});
- var sc=sessionClasses();$("statPresent").textContent=presentTotal;$("statExpected").textContent=expectedTotal;$("statReported").textContent=reported;$("statReportedTotal").textContent=sc.length;$("statAbsent").textContent=reported===0?"—":String(absentTotal);
- $("progressBar").style.width=(sc.length?Math.round(reported/sc.length*100):0)+"%";
- $("sessionCount").textContent=sc.length+" classes · "+expectedTotal+" students";$("noclassCount").textContent=(CLASSES.length-sc.length)+" classes";
- var missing=sc.filter(function(c){return c.present===null}).map(displayName);var note=$("dashNote");
- if(CLASSES.length===0)note.textContent="No classes on the list — add one below.";
- else if(reported===0&&sc.length)note.textContent="No classes reported yet — start with your class below.";
- else if(missing.length===0&&sc.length)note.textContent=absentTotal===0?"All classes reported. Everyone accounted for in teacher counts — copy the summary below.":"All classes reported. "+absentTotal+" absent. Copy the summary below.";
- else note.textContent="Still waiting on: "+missing.join(", ");
- $("reportText").textContent=buildReport(presentTotal,expectedTotal,reported,absentTotal,missing);
- $("drillStatusLabel").textContent=drillStatus;$("studentDrillStatus").textContent=drillStatus;
- document.querySelectorAll("#statusBtns button").forEach(function(b){b.classList.toggle("active",b.dataset.status===drillStatus)});
- renderDashboard(presentTotal,expectedTotal);
-}
-function buildReport(pt,et,rep,abs,missing){var lines=["Fire drill attendance — "+new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"}),"Mode: "+(isShared?"Shared — connected to Google Sheet":"Demo — not shared yet"),"Drill status: "+drillStatus,""];CLASSES.forEach(function(c){var n=displayName(c);if(c.isNoClass)lines.push(n+" – 0/"+c.total+" ("+(c.note||"no class")+")");else if(c.present===null)lines.push(n+" – /"+c.total+" (not reported yet)");else lines.push(n+" – "+c.present+"/"+c.total+(c.present<c.total?" ("+(c.total-c.present)+" absent)":"")+(c.submitted?" [submitted]":""))});lines.push("","Total present: "+pt+"/"+et+" (classes in session)");if(rep>0)lines.push("Absent so far: "+abs);if(missing.length)lines.push("Not reported yet: "+missing.join(", "));else if(sessionClasses().length)lines.push("All classes reported.");if(studentReports.length){lines.push("","Student self-reports: "+studentReports.length);studentReports.forEach(function(r){lines.push("- "+r.name+" ("+r.classCode+") — "+statusLabel(r.status)+" — "+placeOf(r)+(isResolved(r)?" [resolved]":""))})}return lines.join("\n")}
-function renderDashboard(pt,et){
- if(pt===undefined){pt=0;et=0;CLASSES.forEach(function(c){if(!c.isNoClass){et+=c.total;if(c.present!==null)pt+=Math.min(Math.max(c.present,0),c.total)}})}
- var sc=sessionClasses();var unsub=sc.filter(function(c){return !c.submitted});
- var missingNum=Math.max(0,et-pt);
- $("dExpected").textContent=et;$("dAccounted").textContent=pt;$("dMissing").textContent=missingNum;$("dUnsubmitted").textContent=unsub.length;
- var helpCount=studentReports.filter(function(r){return r.status==="need_help"&&!isResolved(r)}).length;
- $("dNote").textContent=studentReports.length?(studentReports.length+" student self-report(s) · "+studentReports.filter(function(r){return r.status==="safe"}).length+" safe, "+studentReports.filter(function(r){return r.status==="inside"}).length+" still inside, "+helpCount+" need help (unresolved). Teacher counts are the accounted-for total; student reports are listed by name below."):"No student self-reports yet. Accounted-for comes from teacher counts.";
- var help=studentReports.filter(function(r){return r.status==="need_help"&&!isResolved(r)});
- var hs=$("helpSection");hs.innerHTML="";
- if(help.length){var b=el("div","help-banner");b.appendChild(el("h3","","Need help — "+help.length+" unresolved"));help.forEach(function(r){b.appendChild(el("div","",r.name+" · "+r.classCode+" · "+placeOf(r)+" · "+new Date(r.time).toLocaleString()+(r.note?" · "+r.note:"")+(r.lat!=null?" · GPS "+Number(r.lat).toFixed(5)+", "+Number(r.lng).toFixed(5):"")));var btn=el("button","btn","Mark resolved — "+r.name);btn.type="button";btn.style.marginTop="8px";btn.addEventListener("click",function(){resolvedKeys[reportKey(r)]=true;r.resolved=true;refresh();showToast("Marked resolved: "+r.name)});b.appendChild(btn)});hs.appendChild(b)}
- var ml=$("missingList");ml.innerHTML="";
- if(!studentReports.length)ml.appendChild(el("p","empty-note","No student reports yet. Once teachers submit, the missing number per class is shown below."));
- var groups={};studentReports.forEach(function(r){(groups[r.classCode||"No class"]=groups[r.classCode||"No class"]||[]).push(r)});
- Object.keys(groups).sort().forEach(function(code){ml.appendChild(el("h3","group-title",code));var arr=groups[code].slice().sort(function(a,b){function rank(x){return x.status==="need_help"&&!isResolved(x)?0:x.status==="inside"?1:2}return rank(a)-rank(b)});arr.forEach(function(r){var item=el("div","report-item"+(r.status==="need_help"&&!isResolved(r)?" help":""));var top=el("div","");top.appendChild(el("span","pill "+(r.status==="need_help"?"help":r.status==="safe"?"ok":"short"),statusLabel(r.status)+(isResolved(r)?" · Resolved":"")));top.appendChild(document.createTextNode("  "));top.appendChild(el("strong","",r.name));item.appendChild(top);item.appendChild(el("div","",placeOf(r)+" · "+new Date(r.time).toLocaleString()+(r.lat!=null?" · GPS "+Number(r.lat).toFixed(5)+", "+Number(r.lng).toFixed(5):"")));if(r.note)item.appendChild(el("div","","Note: "+r.note));if(r.status==="need_help"&&!isResolved(r)){var rb=el("button","btn","Mark resolved");rb.type="button";rb.addEventListener("click",function(){resolvedKeys[reportKey(r)]=true;r.resolved=true;refresh()});item.appendChild(rb)}ml.appendChild(item)})});
- var anyMissing=CLASSES.some(function(c){return !c.isNoClass&&c.present!==null&&c.present<c.total});
- if(anyMissing){ml.appendChild(el("h3","group-title","Teacher counts — missing by class"));CLASSES.forEach(function(c){if(!c.isNoClass&&c.present!==null&&c.present<c.total)ml.appendChild(el("div","report-item",displayName(c)+": "+(c.total-c.present)+" missing ("+c.present+"/"+c.total+" present)"))})}
- var ul=$("unsubmittedList");ul.innerHTML="";if(!unsub.length)ul.appendChild(el("p","empty-note","All in-session classes have been submitted."));else unsub.forEach(function(c){ul.appendChild(el("div","report-item",displayName(c)+" — not yet submitted ("+(c.present===null?"no count yet":c.present+"/"+c.total+" entered, not submitted")+")"))});
-}
-function populateStudentClasses(){var s=$("stuClass");if(!s)return;var cur=s.value;s.innerHTML="";CLASSES.forEach(function(c){var o=document.createElement("option");o.value=displayName(c);o.textContent=displayName(c)+(c.isNoClass?" (no class)":"");s.appendChild(o)});if(cur)s.value=cur}
-document.querySelectorAll('input[name="stuStatus"]').forEach(function(r){r.addEventListener("change",function(){var v=document.querySelector('input[name="stuStatus"]:checked').value;$("assemblyField").hidden=v!=="safe";$("insideFields").hidden=v==="safe"})});
-$("locBtn").addEventListener("click",function(){if(!navigator.geolocation){$("locStatus").textContent="Location not available on this device.";return}$("locStatus").textContent="Getting your location once…";navigator.geolocation.getCurrentPosition(function(p){sharedLoc={lat:p.coords.latitude,lng:p.coords.longitude,accuracy:p.coords.accuracy};$("locStatus").textContent="Location attached: "+sharedLoc.lat.toFixed(5)+", "+sharedLoc.lng.toFixed(5)+" (±"+Math.round(sharedLoc.accuracy)+" m) — shared once, not tracked.";$("locBtn").textContent="Location attached — tap to update once"},function(){$("locStatus").textContent="Could not get location — you can still send the report with building / floor / room."},{enableHighAccuracy:true,timeout:10000,maximumAge:0})});
-$("studentForm").addEventListener("submit",function(e){e.preventDefault();var status=document.querySelector('input[name="stuStatus"]:checked').value;var r={name:$("stuName").value.trim(),classCode:$("stuClass").value,status:status,assemblyPoint:$("stuAssembly").value,building:$("stuBuilding").value.trim(),floor:$("stuFloor").value.trim(),room:$("stuRoom").value.trim(),note:$("stuNote").value.trim(),lat:sharedLoc?sharedLoc.lat:null,lng:sharedLoc?sharedLoc.lng:null,accuracy:sharedLoc?sharedLoc.accuracy:null,time:new Date().toISOString(),resolved:false};if(!r.name){showToast("Please enter your name.");return}studentReports.push(r);postBackend({type:"student",name:r.name,className:r.classCode,status:r.status,assemblyPoint:r.status==="safe"?r.assemblyPoint:"",building:r.building,floor:r.floor,room:r.room,note:r.note,lat:r.lat||"",lng:r.lng||"",accuracy:r.accuracy||""});$("studentFormCard").hidden=true;$("studentDone").hidden=false;$("studentDoneText").textContent="Thanks, "+r.name+" — "+statusLabel(r.status)+" · "+placeOf(r)+" · "+new Date(r.time).toLocaleTimeString()+(isShared?". Sent to the shared Sheet.":". Saved in Demo mode on this device only — not shared yet.");$("studentDrillStatus").textContent=drillStatus;refresh();showToast(isShared?"Report sent to the shared Sheet.":"Report saved — Demo, not shared yet.")});
-$("studentAgainBtn").addEventListener("click",function(){$("studentDone").hidden=true;$("studentFormCard").hidden=false});
-$("statusBtns").addEventListener("click",function(e){if(e.target.dataset&&e.target.dataset.status){drillStatus=e.target.dataset.status;postBackend({type:"status",status:drillStatus});refresh();showToast("Drill status: "+drillStatus)}});
-$("refreshDashBtn").addEventListener("click",function(){if(isShared){fetchBackend().then(function(){showToast("Refreshed from the shared Sheet.")})}else{$("lastUpdated").textContent="Refreshed "+new Date().toLocaleTimeString();renderDashboard();showToast("Refreshed — Demo, local data only.")}});
-$("autoRefreshBtn").addEventListener("click",function(){autoRefresh=!autoRefresh;$("autoRefreshBtn").textContent="Auto-refresh: "+(autoRefresh?"On (15s)":"Off")});
-setInterval(function(){if(autoRefresh&&currentView==="dashboard"&&isShared)fetchBackend();else if(autoRefresh&&currentView==="dashboard"){$("lastUpdated").textContent="Auto-refreshed "+new Date().toLocaleTimeString();renderDashboard()}},15000);
-$("addClassBtn").addEventListener("click",function(){var nc={id:++uid,code:"",total:30,present:null,isNoClass:false,submitted:false};CLASSES.push(nc);buildRow(nc);renderLists();refresh();populateStudentClasses();nc.nameEl.focus();showToast("Class added — type its name and set its size.")});
-$("allPresentBtn").addEventListener("click",function(){CLASSES.forEach(function(c){if(!c.isNoClass){c.present=c.total;c.submitted=false}});refresh();showToast("All in-session classes marked fully present — tap Submit to share.")});
-$("submitAllBtn").addEventListener("click",function(){var n=0;CLASSES.forEach(function(c){if(!c.isNoClass&&c.present!==null){c.submitted=true;postBackend({type:"teacher",className:displayName(c),total:c.total,present:c.present,submittedBy:""});n++}});refresh();showToast(n?(isShared?n+" class(es) submitted to the shared Sheet.":n+" class(es) saved — Demo, not shared yet."):"Enter a count first.")});
-$("clearBtn").addEventListener("click",function(){CLASSES.forEach(function(c){if(!c.isNoClass){c.present=null;c.submitted=false}});refresh();showToast("Counts cleared.")});
-$("copyBtn").addEventListener("click",function(){var text=$("reportText").textContent;function done(){showToast("Copied — now paste it into the group chat.")}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,function(){showToast("Copy didn't work — long-press the summary to copy it.")});else showToast("Long-press the summary to copy it.")});
-function connectWith(url){backendUrl=(url||"").trim();isShared=!!backendUrl;if(isShared)$("backendUrl").value=backendUrl;updateMode();refresh();if(isShared)fetchBackend()}
-$("connectBtn").addEventListener("click",function(){connectWith($("backendUrl").value);showToast(isShared?"Connected — Shared mode.":"Paste a Web App URL first.")});
-$("disconnectBtn").addEventListener("click",function(){backendUrl="";isShared=false;$("backendUrl").value="";updateMode();refresh();showToast("Disconnected — back to Demo mode.")});
-$("testBtn").addEventListener("click",function(){var u=$("backendUrl").value.trim()||backendUrl;if(!u){showToast("Paste a Web App URL first.");return}fetch(u).then(function(r){return r.json()}).then(function(){showToast("Connection OK — the Sheet bridge responded.")}).catch(function(){showToast("Could not reach that URL — check deployment access is Anyone.")})});
-$("copyScriptBtn").addEventListener("click",function(){showToast("Full bridge script is in fire-drill-shared/Code.gs — paste that file in Apps Script.")});
-var params=new URLSearchParams(location.search);
-populateStudentClasses();updateMode();renderLists();refresh();
-if(params.get("backend"))connectWith(params.get("backend"));
-var v=params.get("view");showView(v==="student"?"student":v==="dashboard"?"dashboard":v==="settings"?"settings":"teacher");
+  "use strict";
+
+  // Starting class list from the drill roll call. Names, class sizes and the
+  // list itself are all editable on the page. note = why the class has no session.
+  var CLASSES = [
+    { code:"AM2501K", total:31, noClass:false },
+    { code:"AM2501L", total:33, noClass:true,  note:"L1 AM no class" },
+    { code:"AM2501M", total:30, noClass:false },
+    { code:"AM2501Y", total:23, noClass:false },
+    { code:"AM2501Z", total:31, noClass:false },
+    { code:"AM2501S", total:9,  noClass:false },
+    { code:"AM2601A", total:37, noClass:false },
+    { code:"AM2601B", total:37, noClass:false },
+    { code:"AM2601C", total:33, noClass:true,  note:"AM no class" },
+    { code:"AM2601D", total:38, noClass:true,  note:"AM no class" },
+    { code:"AM2601E", total:37, noClass:true,  note:"AM no class" },
+    { code:"AM2601F", total:41, noClass:true,  note:"AM no class" },
+    { code:"AM2601R", total:13, noClass:false }
+  ];
+
+  // State: present = null (not reported) or a number. No-class classes sit at 0.
+  var uid = 0;
+  CLASSES.forEach(function(c){
+    c.id = ++uid;
+    c.present = c.noClass ? 0 : null;
+    c.isNoClass = c.noClass;
+  });
+
+  var sessionList = document.getElementById("sessionList");
+  var noclassList = document.getElementById("noclassList");
+  var reportEl = document.getElementById("reportText");
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+
+  // Drill date (today, in the viewer's locale)
+  document.getElementById("drillDate").textContent =
+    new Date().toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" });
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function displayName(c){
+    var n = (c.code || "").trim();
+    return n || "Unnamed class";
+  }
+
+  function buildRow(c){
+    var row = el("div","row");
+    row.id = "row-" + c.id;
+
+    var nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.className = "name-input";
+    nameInput.value = c.code;
+    nameInput.placeholder = "Class name";
+    nameInput.autocomplete = "off";
+    nameInput.setAttribute("aria-label","Class name");
+    row.appendChild(nameInput);
+
+    var counter = el("div","counter");
+    var minus = el("button","stepper","−");
+    minus.type = "button";
+    var countbox = el("div","countbox");
+    var input = document.createElement("input");
+    input.type = "number";
+    input.inputMode = "numeric";
+    input.min = "0";
+    input.placeholder = "–";
+    var sep = el("span","sep","/");
+    var totalInput = document.createElement("input");
+    totalInput.type = "number";
+    totalInput.inputMode = "numeric";
+    totalInput.className = "total-input";
+    totalInput.min = "1";
+    totalInput.value = String(c.total);
+    countbox.appendChild(input);
+    countbox.appendChild(sep);
+    countbox.appendChild(totalInput);
+    var plus = el("button","stepper","+");
+    plus.type = "button";
+    counter.appendChild(minus);
+    counter.appendChild(countbox);
+    counter.appendChild(plus);
+    row.appendChild(counter);
+
+    var meta = el("div","meta");
+    var status = el("span","pill","Awaiting count");
+    meta.appendChild(status);
+    var label = el("label","toggle");
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = c.isNoClass;
+    var track = el("span","track");
+    label.appendChild(cb);
+    label.appendChild(track);
+    label.appendChild(document.createTextNode("No class"));
+    meta.appendChild(label);
+    if (c.note){
+      var note = el("span","", "(" + c.note + ")");
+      note.style.color = "var(--ink-3)";
+      note.style.fontSize = ".85rem";
+      meta.appendChild(note);
+    }
+    row.appendChild(meta);
+
+    var actions = el("div","row-actions");
+    var allBtn = el("button","allbtn","All present");
+    allBtn.type = "button";
+    allBtn.addEventListener("click", function(){ c.present = c.total; refresh(); });
+    actions.appendChild(allBtn);
+    var removeBtn = el("button","removebtn","Remove");
+    removeBtn.type = "button";
+    actions.appendChild(removeBtn);
+    row.appendChild(actions);
+
+    c.rowEl = row; c.nameEl = nameInput; c.inputEl = input; c.totalEl = totalInput;
+    c.statusEl = status; c.minusEl = minus; c.plusEl = plus;
+    c.allBtnEl = allBtn; c.removeEl = removeBtn; c.toggleEl = cb;
+
+    nameInput.addEventListener("input", function(){
+      c.code = nameInput.value;
+      refresh(true);
+    });
+    nameInput.addEventListener("blur", function(){ refresh(); });
+
+    totalInput.addEventListener("input", function(){
+      var n = parseInt(totalInput.value.trim(), 10);
+      if (!isNaN(n) && n >= 1){ c.total = n; }
+      refresh(true);
+    });
+    totalInput.addEventListener("blur", function(){ refresh(); });
+
+    cb.addEventListener("change", function(){
+      c.isNoClass = cb.checked;
+      if (c.isNoClass){ c.present = 0; }
+      else if (c.present === 0){ c.present = null; }
+      renderLists();
+      refresh();
+    });
+
+    var armed = false, armTimer = null;
+    function disarm(){
+      armed = false;
+      removeBtn.textContent = "Remove";
+      removeBtn.classList.remove("armed");
+      if (armTimer){ clearTimeout(armTimer); armTimer = null; }
+      refreshLabels(c);
+    }
+    removeBtn.addEventListener("click", function(){
+      if (!armed){
+        armed = true;
+        removeBtn.textContent = "Tap again to remove";
+        removeBtn.classList.add("armed");
+        armTimer = setTimeout(disarm, 3000);
+        return;
+      }
+      if (armTimer) clearTimeout(armTimer);
+      var name = displayName(c);
+      var idx = CLASSES.indexOf(c);
+      if (idx >= 0) CLASSES.splice(idx, 1);
+      if (row.parentNode) row.parentNode.removeChild(row);
+      renderLists();
+      refresh();
+      showToast("Removed " + name + ".");
+    });
+
+    minus.addEventListener("click", function(){
+      var v = (c.present === null ? c.total : c.present) - 1;
+      c.present = Math.max(0, v);
+      refresh();
+    });
+    plus.addEventListener("click", function(){
+      var v = (c.present === null ? 0 : c.present) + 1;
+      c.present = Math.min(c.total, v);
+      refresh();
+    });
+    input.addEventListener("input", function(){
+      var raw = input.value.trim();
+      if (raw === ""){ c.present = null; }
+      else {
+        var n = parseInt(raw, 10);
+        c.present = isNaN(n) ? null : n;
+      }
+      refresh(true);
+    });
+    input.addEventListener("blur", function(){ refresh(); });
+
+    (c.isNoClass ? noclassList : sessionList).appendChild(row);
+  }
+
+  function refreshLabels(c){
+    var name = displayName(c);
+    c.minusEl.setAttribute("aria-label","One fewer present in " + name);
+    c.plusEl.setAttribute("aria-label","One more present in " + name);
+    c.inputEl.setAttribute("aria-label","Students present in " + name + " out of " + c.total);
+    c.totalEl.setAttribute("aria-label","Total students in " + name);
+    c.toggleEl.setAttribute("aria-label", name + " has no class this session");
+    c.allBtnEl.setAttribute("aria-label","Mark all " + c.total + " present in " + name);
+    c.removeEl.setAttribute("aria-label","Remove class " + name);
+  }
+
+  CLASSES.forEach(buildRow);
+
+  // Move each row into the list matching its No class state, keeping list order.
+  function renderLists(){
+    CLASSES.forEach(function(c){
+      (c.isNoClass ? noclassList : sessionList).appendChild(c.rowEl);
+    });
+    document.getElementById("sessionEmpty").hidden = sessionList.children.length > 0;
+    document.getElementById("noclassEmpty").hidden = noclassList.children.length > 0;
+  }
+
+  function sessionClasses(){ return CLASSES.filter(function(c){ return !c.isNoClass; }); }
+
+  function refresh(fromTyping){
+    var presentTotal = 0, expectedTotal = 0, reported = 0, absentTotal = 0;
+
+    CLASSES.forEach(function(c){
+      var row = c.rowEl, input = c.inputEl, status = c.statusEl;
+      row.classList.toggle("noclass", c.isNoClass);
+      refreshLabels(c);
+      input.max = String(c.total);
+      if (document.activeElement !== c.totalEl) c.totalEl.value = String(c.total);
+
+      if (c.isNoClass){
+        input.value = "0";
+        input.disabled = true;
+        c.totalEl.disabled = true;
+        c.minusEl.disabled = true; c.plusEl.disabled = true;
+        c.allBtnEl.disabled = true;
+        status.className = "pill noclass";
+        status.textContent = "No class";
+        row.classList.remove("is-done");
+        return;
+      }
+      input.disabled = false;
+      c.totalEl.disabled = false;
+      c.allBtnEl.disabled = false;
+      expectedTotal += c.total;
+
+      if (c.present === null){
+        if (!fromTyping || document.activeElement !== input) input.value = "";
+        status.className = "pill";
+        status.textContent = "Awaiting count";
+        row.classList.remove("is-done");
+        c.minusEl.disabled = false; c.plusEl.disabled = false;
+        c.allBtnEl.disabled = false;
+      } else {
+        var v = c.present;
+        if (document.activeElement !== input) input.value = String(v);
+        reported++;
+        presentTotal += Math.min(Math.max(v,0), c.total);
+        if (v > c.total){
+          status.className = "pill err";
+          status.textContent = "Over class size — max " + c.total;
+          row.classList.remove("is-done");
+        } else if (v === c.total){
+          status.className = "pill ok";
+          status.textContent = "All present";
+          row.classList.add("is-done");
+        } else {
+          absentTotal += (c.total - v);
+          status.className = "pill short";
+          status.textContent = (c.total - v) + " absent";
+          row.classList.remove("is-done");
+        }
+        c.minusEl.disabled = v <= 0;
+        c.plusEl.disabled = v >= c.total;
+        c.allBtnEl.disabled = v === c.total;
+      }
+    });
+
+    var sc = sessionClasses();
+    var ncCount = CLASSES.length - sc.length;
+    document.getElementById("statPresent").textContent = presentTotal;
+    document.getElementById("statExpected").textContent = expectedTotal;
+    document.getElementById("statReported").textContent = reported;
+    document.getElementById("statReportedTotal").textContent = sc.length;
+    document.getElementById("statAbsent").textContent = reported === 0 ? "—" : String(absentTotal);
+    var pct = sc.length ? Math.round(reported / sc.length * 100) : 0;
+    document.getElementById("progressBar").style.width = pct + "%";
+    document.getElementById("sessionCount").textContent =
+      sc.length + (sc.length === 1 ? " class" : " classes") + " · " + expectedTotal + (expectedTotal === 1 ? " student" : " students");
+    document.getElementById("noclassCount").textContent =
+      ncCount + (ncCount === 1 ? " class" : " classes");
+
+    var missing = sc.filter(function(c){ return c.present === null; }).map(displayName);
+    var note = document.getElementById("dashNote");
+    if (CLASSES.length === 0){
+      note.textContent = "No classes on the list — add one below.";
+    } else if (reported === 0 && sc.length){
+      note.textContent = "No classes reported yet — start with your class below.";
+    } else if (missing.length === 0 && sc.length){
+      note.innerHTML = "";
+      note.appendChild(el("strong","","All classes reported. "));
+      note.appendChild(document.createTextNode(absentTotal === 0
+        ? "Everyone accounted for — copy the summary below."
+        : absentTotal + (absentTotal === 1 ? " student" : " students") + " absent. Copy the summary below."));
+    } else if (missing.length === 0){
+      note.textContent = "No classes in session.";
+    } else {
+      note.innerHTML = "";
+      note.appendChild(document.createTextNode("Still waiting on: "));
+      note.appendChild(el("strong","", missing.join(", ")));
+    }
+
+    reportEl.textContent = buildReport(presentTotal, expectedTotal, reported, absentTotal, missing);
+  }
+
+  function buildReport(presentTotal, expectedTotal, reported, absentTotal, missing){
+    var lines = [];
+    lines.push("Fire drill attendance — " + new Date().toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" }));
+    lines.push("");
+    CLASSES.forEach(function(c){
+      var name = displayName(c);
+      if (c.isNoClass){
+        lines.push(name + " – 0/" + c.total + " (" + (c.note || "no class") + ")");
+      } else if (c.present === null){
+        lines.push(name + " – /" + c.total + " (not reported yet)");
+      } else {
+        var extra = "";
+        if (c.present > c.total) extra = " — please check, over class size";
+        else if (c.present < c.total) extra = " (" + (c.total - c.present) + " absent)";
+        lines.push(name + " – " + c.present + "/" + c.total + extra);
+      }
+    });
+    lines.push("");
+    lines.push("Total present: " + presentTotal + "/" + expectedTotal + " (classes in session)");
+    if (reported > 0) lines.push("Absent so far: " + absentTotal);
+    if (missing.length) lines.push("Not reported yet: " + missing.join(", "));
+    else if (sessionClasses().length) lines.push("All classes reported.");
+    return lines.join("\n");
+  }
+
+  document.getElementById("addClassBtn").addEventListener("click", function(){
+    var nc = { id:++uid, code:"", total:30, noClass:false, note:"", present:null, isNoClass:false };
+    CLASSES.push(nc);
+    buildRow(nc);
+    renderLists();
+    refresh();
+    nc.nameEl.focus();
+    showToast("Class added — type its name and set its size.");
+  });
+  document.getElementById("allPresentBtn").addEventListener("click", function(){
+    CLASSES.forEach(function(c){ if (!c.isNoClass) c.present = c.total; });
+    refresh();
+    showToast("All in-session classes marked fully present.");
+  });
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    CLASSES.forEach(function(c){ if (!c.isNoClass) c.present = null; });
+    refresh();
+    showToast("Counts cleared.");
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var text = reportEl.textContent;
+    function done(){ showToast("Copied — now paste it into the group chat."); }
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); done(); }
+      catch(e){ showToast("Copy didn't work — long-press the summary to copy it."); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+  });
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 3200);
+  }
+
+  renderLists();
+  refresh();
 })();
 </script>
 </body>

@@ -1,36 +1,23 @@
-# Fire Drill Attendance — Phase 1 (shared)
+# Fire Drill Attendance
 
-Phase 1 of the comprehensive school fire drill app: shared teacher
-headcount, a student self-report view (Safe at assembly point / Still
-inside with building, floor, room / Need help, optional note and
-optional one-time location), and a live coordinator dashboard
-(expected / accounted / missing, classes not yet submitted, missing
-list by class, Need help highlighted).
-
-The old, teacher-only version stays live on the Muse public link.
-This Phase 1 version is the one deployed to Streamlit.
-
-## Shared store
-
-Google Sheet "Fire Drill Attendance", via a Google Apps Script web
-app. Paste the deployed web app URL into the app's Settings >
-Shared backend URL field. Until a URL is set, the app runs in a
-clearly labelled demo mode (local only, not shared).
-
-Sheet tabs: Classes, TeacherSubmissions, StudentReports, DrillStatus.
-Bridge code: workspace/fire-drill-shared/Code.gs, setup in
-workspace/fire-drill-shared/SETUP.md.
+Fire Drill Attendance app, with editable class names, add/remove classes,
+editable total students per class, No class toggles, dashboard totals and
+a copyable summary.
 
 ## Deploy to Streamlit Cloud
 
-1. Push this folder to the GitHub repository.
+1. Push this folder to a GitHub repository (see below).
 2. Go to https://share.streamlit.io and sign in with GitHub.
 3. Click **Create app** / **New app**.
 4. Select the repository, branch `main`, and main file path `app.py`.
 5. Click **Deploy**.
 
+Streamlit only wraps the original single-file HTML app
+(`fire-drill-attendance.html`); attendance counts live in the browser,
+just like the original app, and are not sent to a server.
+
 ## Files
 
 - `app.py` — Streamlit wrapper
-- `fire-drill-attendance.html` — the Phase 1 app itself
+- `fire-drill-attendance.html` — the attendance app itself
 - `requirements.txt` — Streamlit dependency
