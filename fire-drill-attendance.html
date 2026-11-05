@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Fire Drill Attendance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#f2f3f5;
+    --surface:#ffffff;
+    --surface-2:#eef0f2;
+    --ink:#161a1e;
+    --ink-2:#4b5560;
+    --ink-3:#7c8791;
+    --line:#dde1e5;
+    --red:#c1272d;
+    --red-dark:#9e1f24;
+    --red-soft:#fdeeee;
+    --amber:#9a6206;
+    --amber-bg:#fdf3e0;
+    --green:#177245;
+    --green-bg:#e6f4ec;
+    --grey-bg:#eef0f2;
+    --input-bg:#ffffff;
+    --shadow:0 1px 2px rgba(16,24,32,.06),0 8px 24px -12px rgba(16,24,32,.18);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#101417;
+      --surface:#1a1f24;
+      --surface-2:#22282e;
+      --ink:#f0f3f5;
+      --ink-2:#b6bfc7;
+      --ink-3:#8b96a0;
+      --line:#2e363d;
+      --red:#e5534b;
+      --red-dark:#e5534b;
+      --red-soft:#3a2224;
+      --amber:#e8b34b;
+      --amber-bg:#38300f;
+      --green:#4cc38a;
+      --green-bg:#173527;
+      --grey-bg:#22282e;
+      --input-bg:#12171b;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.45;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:20px 16px 56px}
+
+  /* ---------- Header ---------- */
+  .alert-strip{
+    display:flex;align-items:center;gap:10px;
+    background:var(--red);color:#fff;border-radius:10px;
+    padding:9px 14px;font-weight:600;font-size:.92rem;letter-spacing:.01em;
+  }
+  .alert-strip svg{flex:none}
+  .alert-strip .date{margin-left:auto;font-weight:500;opacity:.92;font-size:.88rem;white-space:nowrap}
+  h1{
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;
+    font-size:clamp(2.1rem,7vw,3rem);line-height:1.02;letter-spacing:.01em;
+    margin:18px 0 6px;text-transform:uppercase;
+  }
+  .lede{color:var(--ink-2);font-size:1.02rem;margin:0 0 20px;max-width:56ch}
+  .lede strong{color:var(--ink)}
+
+  /* ---------- Summary dashboard ---------- */
+  .dash{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:16px 18px 14px;margin-bottom:22px;
+  }
+  .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stat .num{
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;
+    font-size:clamp(1.9rem,6vw,2.5rem);line-height:1;font-variant-numeric:tabular-nums;
+  }
+  .stat .num small{font-size:.55em;color:var(--ink-3);font-weight:600}
+  .stat .lbl{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin-top:4px}
+  .stat.accent .num{color:var(--red)}
+  .bar{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar > div{height:100%;width:0%;background:var(--red);border-radius:99px;transition:width .3s ease}
+  .dash-note{font-size:.88rem;color:var(--ink-2);margin-top:9px}
+  .dash-note strong{color:var(--ink)}
+
+  /* ---------- Sections ---------- */
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 10px}
+  .sec-head h2{
+    font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;
+    letter-spacing:.05em;font-size:1.25rem;margin:0;
+  }
+  .sec-head .count{color:var(--ink-3);font-size:.9rem;font-weight:600}
+  .sec-head .hint{margin-left:auto;color:var(--ink-3);font-size:.85rem;text-align:right}
+
+  .list{display:flex;flex-direction:column;gap:10px}
+  .row{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:13px 14px;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;
+  }
+  .row.is-done{border-color:var(--green)}
+  .name-input{
+    font-family:"Barlow Semi Condensed",sans-serif;font-weight:600;
+    font-size:1.28rem;letter-spacing:.03em;line-height:1.1;color:var(--ink);
+    background:transparent;border:1.5px solid transparent;border-bottom:1.5px dashed var(--line);
+    border-radius:8px;padding:3px 6px;width:100%;min-width:0;
+  }
+  .name-input:focus{outline:none;border-color:var(--red);background:var(--input-bg)}
+  .name-input::placeholder{color:var(--ink-3)}
+  .meta{grid-column:1;font-size:.87rem;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--grey-bg);color:var(--ink-2)}
+  .pill.ok{background:var(--green-bg);color:var(--green)}
+  .pill.short{background:var(--amber-bg);color:var(--amber)}
+  .pill.err{background:var(--red-soft);color:var(--red)}
+  .pill.noclass{background:var(--grey-bg);color:var(--ink-2)}
+
+  .counter{grid-row:1 / span 2;grid-column:2;display:flex;align-items:center;gap:7px}
+  .stepper{
+    width:44px;height:48px;border:1px solid var(--line);background:var(--surface-2);
+    color:var(--ink);border-radius:10px;font-size:1.35rem;font-weight:600;line-height:1;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
+    -webkit-tap-highlight-color:transparent;user-select:none;
+  }
+  .stepper:active{background:var(--line)}
+  .stepper:disabled{opacity:.35;cursor:default}
+  .countbox{display:flex;align-items:center;gap:3px}
+  .countbox input{
+    width:58px;height:48px;text-align:center;
+    font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;font-weight:700;
+    font-variant-numeric:tabular-nums;color:var(--ink);
+    background:var(--input-bg);border:1.5px solid var(--line);border-radius:10px;padding:0 2px;
+    -moz-appearance:textfield;appearance:textfield;
+  }
+  .countbox input::-webkit-outer-spin-button,.countbox input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .countbox input:focus{outline:none;border-color:var(--red)}
+  .countbox input::placeholder{color:var(--ink-3)}
+  .countbox .sep{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem;font-weight:600;color:var(--ink-3)}
+  .countbox input.total-input{
+    width:48px;font-size:1.3rem;font-weight:600;color:var(--ink-2);
+  }
+  .countbox input.total-input:focus{color:var(--ink)}
+  .countbox input:disabled{opacity:.55}
+  .row-actions{grid-column:2;justify-self:end;display:flex;gap:16px;align-items:center}
+  .allbtn{
+    background:none;border:none;color:var(--red);
+    font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;padding:2px 0;
+  }
+  .allbtn:disabled{color:var(--ink-3);cursor:default}
+  .removebtn{
+    background:none;border:none;color:var(--ink-3);
+    font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;padding:2px 0;
+  }
+  .removebtn.armed{color:var(--red)}
+  .empty-note{color:var(--ink-3);font-size:.92rem;margin:2px}
+
+  /* no-class toggle */
+  .toggle{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--ink-2)}
+  .toggle input{position:absolute;opacity:0;width:0;height:0}
+  .track{width:38px;height:22px;border-radius:99px;background:var(--line);position:relative;transition:background .15s;flex:none}
+  .track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .15s}
+  .toggle input:checked + .track{background:var(--red)}
+  .toggle input:checked + .track::after{left:19px}
+  .toggle input:focus-visible + .track{outline:2px solid var(--red);outline-offset:2px}
+  .row.noclass .counter{opacity:.45}
+
+  /* ---------- Actions & summary ---------- */
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
+  .btn{
+    font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;
+    border-radius:11px;padding:12px 18px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff;flex:1;justify-content:center;min-width:200px;padding:14px 18px;font-size:1.02rem}
+  .btn.primary:active{background:var(--red-dark)}
+  .summary-box{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);margin-top:26px;overflow:hidden;
+  }
+  .summary-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line)}
+  .summary-head h2{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:1.2rem;margin:0}
+  .summary-head span{margin-left:auto;font-size:.83rem;color:var(--ink-3)}
+  pre.report{
+    margin:0;padding:14px 16px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:.92rem;line-height:1.65;white-space:pre-wrap;word-break:break-word;color:var(--ink);
+    max-height:420px;overflow:auto;
+  }
+  .summary-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
+  .foot-note{font-size:.87rem;color:var(--ink-2);margin:14px 2px 0}
+
+  .toast{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,80px);
+    background:var(--ink);color:var(--bg);font-weight:600;font-size:.95rem;
+    padding:12px 20px;border-radius:99px;box-shadow:0 10px 30px rgba(0,0,0,.3);
+    transition:transform .25s ease;z-index:50;max-width:calc(100vw - 32px);text-align:center;
+  }
+  .toast.show{transform:translate(-50%,0)}
+
+  @media (max-width:520px){
+    .wrap{padding:14px 12px 48px}
+    .counter{gap:5px}
+    .stepper{width:38px;height:46px}
+    .countbox input{width:50px;height:46px}
+    .countbox input.total-input{width:42px}
+    .dash-grid{gap:8px}
+    .sec-head .hint{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bar > div,.toast,.track,.track::after{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="alert-strip" role="note">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+    <span style="white-space:nowrap">Fire drill — attendance</span>
+    <span class="date" id="drillDate"></span>
+  </div>
+
+  <h1>Fire Drill Attendance</h1>
+  <p class="lede">Class Advisors: enter the number of students <strong>present at the assembly point</strong> for your class, then tap <strong>Copy summary</strong> at the bottom and paste it into the group chat. Class names and class sizes are editable — tap a name or the number after the “/” to change it, and use <strong>Add class</strong> or <strong>Remove</strong> to adjust the list.</p>
+
+  <section class="dash" aria-label="Attendance totals so far">
+    <div class="dash-grid">
+      <div class="stat accent">
+        <div class="num"><span id="statPresent">0</span><small> / <span id="statExpected">211</span></small></div>
+        <div class="lbl">Students present</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span id="statReported">0</span><small> / <span id="statReportedTotal">8</span></small></div>
+        <div class="lbl">Classes reported</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="statAbsent">—</div>
+        <div class="lbl">Absent (reported classes)</div>
+      </div>
+    </div>
+    <div class="bar" aria-hidden="true"><div id="progressBar"></div></div>
+    <div class="dash-note" id="dashNote">No classes reported yet — start with your class below.</div>
+  </section>
+
+  <div class="sec-head">
+    <h2>Classes in session</h2>
+    <span class="count" id="sessionCount">8 classes · 211 students</span>
+    <span class="hint">Tap + / − or type the count · names &amp; sizes editable</span>
+  </div>
+  <div class="list" id="sessionList"></div>
+  <p class="empty-note" id="sessionEmpty" hidden>No classes in session — add one below, or turn off “No class” on a class.</p>
+
+  <div class="sec-head">
+    <h2>No class this session</h2>
+    <span class="count" id="noclassCount">5 classes</span>
+    <span class="hint">Pre-filled 0 — turn off “No class” only if your class is in</span>
+  </div>
+  <div class="list" id="noclassList"></div>
+  <p class="empty-note" id="noclassEmpty" hidden>No classes marked “No class”.</p>
+
+  <div class="actions">
+    <button type="button" class="btn" id="addClassBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+      Add class
+    </button>
+    <button type="button" class="btn" id="allPresentBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+      Mark all present
+    </button>
+    <button type="button" class="btn" id="clearBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Clear counts
+    </button>
+  </div>
+
+  <section class="summary-box" aria-label="Summary to send to the group chat">
+    <div class="summary-head">
+      <h2>Summary for the group chat</h2>
+      <span>Updates as you type</span>
+    </div>
+    <pre class="report" id="reportText"></pre>
+    <div class="summary-foot">
+      <button type="button" class="btn primary" id="copyBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        Copy summary
+      </button>
+    </div>
+  </section>
+  <p class="foot-note">Each person filling this in sees their own copy of the form — copy the summary and paste it into the group chat so everyone’s counts land in one place.</p>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Starting class list from the drill roll call. Names, class sizes and the
+  // list itself are all editable on the page. note = why the class has no session.
+  var CLASSES = [
+    { code:"AM2501K", total:31, noClass:false },
+    { code:"AM2501L", total:33, noClass:true,  note:"L1 AM no class" },
+    { code:"AM2501M", total:30, noClass:false },
+    { code:"AM2501Y", total:23, noClass:false },
+    { code:"AM2501Z", total:31, noClass:false },
+    { code:"AM2501S", total:9,  noClass:false },
+    { code:"AM2601A", total:37, noClass:false },
+    { code:"AM2601B", total:37, noClass:false },
+    { code:"AM2601C", total:33, noClass:true,  note:"AM no class" },
+    { code:"AM2601D", total:38, noClass:true,  note:"AM no class" },
+    { code:"AM2601E", total:37, noClass:true,  note:"AM no class" },
+    { code:"AM2601F", total:41, noClass:true,  note:"AM no class" },
+    { code:"AM2601R", total:13, noClass:false }
+  ];
+
+  // State: present = null (not reported) or a number. No-class classes sit at 0.
+  var uid = 0;
+  CLASSES.forEach(function(c){
+    c.id = ++uid;
+    c.present = c.noClass ? 0 : null;
+    c.isNoClass = c.noClass;
+  });
+
+  var sessionList = document.getElementById("sessionList");
+  var noclassList = document.getElementById("noclassList");
+  var reportEl = document.getElementById("reportText");
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+
+  // Drill date (today, in the viewer's locale)
+  document.getElementById("drillDate").textContent =
+    new Date().toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" });
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function displayName(c){
+    var n = (c.code || "").trim();
+    return n || "Unnamed class";
+  }
+
+  function buildRow(c){
+    var row = el("div","row");
+    row.id = "row-" + c.id;
+
+    var nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.className = "name-input";
+    nameInput.value = c.code;
+    nameInput.placeholder = "Class name";
+    nameInput.autocomplete = "off";
+    nameInput.setAttribute("aria-label","Class name");
+    row.appendChild(nameInput);
+
+    var counter = el("div","counter");
+    var minus = el("button","stepper","−");
+    minus.type = "button";
+    var countbox = el("div","countbox");
+    var input = document.createElement("input");
+    input.type = "number";
+    input.inputMode = "numeric";
+    input.min = "0";
+    input.placeholder = "–";
+    var sep = el("span","sep","/");
+    var totalInput = document.createElement("input");
+    totalInput.type = "number";
+    totalInput.inputMode = "numeric";
+    totalInput.className = "total-input";
+    totalInput.min = "1";
+    totalInput.value = String(c.total);
+    countbox.appendChild(input);
+    countbox.appendChild(sep);
+    countbox.appendChild(totalInput);
+    var plus = el("button","stepper","+");
+    plus.type = "button";
+    counter.appendChild(minus);
+    counter.appendChild(countbox);
+    counter.appendChild(plus);
+    row.appendChild(counter);
+
+    var meta = el("div","meta");
+    var status = el("span","pill","Awaiting count");
+    meta.appendChild(status);
+    var label = el("label","toggle");
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = c.isNoClass;
+    var track = el("span","track");
+    label.appendChild(cb);
+    label.appendChild(track);
+    label.appendChild(document.createTextNode("No class"));
+    meta.appendChild(label);
+    if (c.note){
+      var note = el("span","", "(" + c.note + ")");
+      note.style.color = "var(--ink-3)";
+      note.style.fontSize = ".85rem";
+      meta.appendChild(note);
+    }
+    row.appendChild(meta);
+
+    var actions = el("div","row-actions");
+    var allBtn = el("button","allbtn","All present");
+    allBtn.type = "button";
+    allBtn.addEventListener("click", function(){ c.present = c.total; refresh(); });
+    actions.appendChild(allBtn);
+    var removeBtn = el("button","removebtn","Remove");
+    removeBtn.type = "button";
+    actions.appendChild(removeBtn);
+    row.appendChild(actions);
+
+    c.rowEl = row; c.nameEl = nameInput; c.inputEl = input; c.totalEl = totalInput;
+    c.statusEl = status; c.minusEl = minus; c.plusEl = plus;
+    c.allBtnEl = allBtn; c.removeEl = removeBtn; c.toggleEl = cb;
+
+    nameInput.addEventListener("input", function(){
+      c.code = nameInput.value;
+      refresh(true);
+    });
+    nameInput.addEventListener("blur", function(){ refresh(); });
+
+    totalInput.addEventListener("input", function(){
+      var n = parseInt(totalInput.value.trim(), 10);
+      if (!isNaN(n) && n >= 1){ c.total = n; }
+      refresh(true);
+    });
+    totalInput.addEventListener("blur", function(){ refresh(); });
+
+    cb.addEventListener("change", function(){
+      c.isNoClass = cb.checked;
+      if (c.isNoClass){ c.present = 0; }
+      else if (c.present === 0){ c.present = null; }
+      renderLists();
+      refresh();
+    });
+
+    var armed = false, armTimer = null;
+    function disarm(){
+      armed = false;
+      removeBtn.textContent = "Remove";
+      removeBtn.classList.remove("armed");
+      if (armTimer){ clearTimeout(armTimer); armTimer = null; }
+      refreshLabels(c);
+    }
+    removeBtn.addEventListener("click", function(){
+      if (!armed){
+        armed = true;
+        removeBtn.textContent = "Tap again to remove";
+        removeBtn.classList.add("armed");
+        armTimer = setTimeout(disarm, 3000);
+        return;
+      }
+      if (armTimer) clearTimeout(armTimer);
+      var name = displayName(c);
+      var idx = CLASSES.indexOf(c);
+      if (idx >= 0) CLASSES.splice(idx, 1);
+      if (row.parentNode) row.parentNode.removeChild(row);
+      renderLists();
+      refresh();
+      showToast("Removed " + name + ".");
+    });
+
+    minus.addEventListener("click", function(){
+      var v = (c.present === null ? c.total : c.present) - 1;
+      c.present = Math.max(0, v);
+      refresh();
+    });
+    plus.addEventListener("click", function(){
+      var v = (c.present === null ? 0 : c.present) + 1;
+      c.present = Math.min(c.total, v);
+      refresh();
+    });
+    input.addEventListener("input", function(){
+      var raw = input.value.trim();
+      if (raw === ""){ c.present = null; }
+      else {
+        var n = parseInt(raw, 10);
+        c.present = isNaN(n) ? null : n;
+      }
+      refresh(true);
+    });
+    input.addEventListener("blur", function(){ refresh(); });
+
+    (c.isNoClass ? noclassList : sessionList).appendChild(row);
+  }
+
+  function refreshLabels(c){
+    var name = displayName(c);
+    c.minusEl.setAttribute("aria-label","One fewer present in " + name);
+    c.plusEl.setAttribute("aria-label","One more present in " + name);
+    c.inputEl.setAttribute("aria-label","Students present in " + name + " out of " + c.total);
+    c.totalEl.setAttribute("aria-label","Total students in " + name);
+    c.toggleEl.setAttribute("aria-label", name + " has no class this session");
+    c.allBtnEl.setAttribute("aria-label","Mark all " + c.total + " present in " + name);
+    c.removeEl.setAttribute("aria-label","Remove class " + name);
+  }
+
+  CLASSES.forEach(buildRow);
+
+  // Move each row into the list matching its No class state, keeping list order.
+  function renderLists(){
+    CLASSES.forEach(function(c){
+      (c.isNoClass ? noclassList : sessionList).appendChild(c.rowEl);
+    });
+    document.getElementById("sessionEmpty").hidden = sessionList.children.length > 0;
+    document.getElementById("noclassEmpty").hidden = noclassList.children.length > 0;
+  }
+
+  function sessionClasses(){ return CLASSES.filter(function(c){ return !c.isNoClass; }); }
+
+  function refresh(fromTyping){
+    var presentTotal = 0, expectedTotal = 0, reported = 0, absentTotal = 0;
+
+    CLASSES.forEach(function(c){
+      var row = c.rowEl, input = c.inputEl, status = c.statusEl;
+      row.classList.toggle("noclass", c.isNoClass);
+      refreshLabels(c);
+      input.max = String(c.total);
+      if (document.activeElement !== c.totalEl) c.totalEl.value = String(c.total);
+
+      if (c.isNoClass){
+        input.value = "0";
+        input.disabled = true;
+        c.totalEl.disabled = true;
+        c.minusEl.disabled = true; c.plusEl.disabled = true;
+        c.allBtnEl.disabled = true;
+        status.className = "pill noclass";
+        status.textContent = "No class";
+        row.classList.remove("is-done");
+        return;
+      }
+      input.disabled = false;
+      c.totalEl.disabled = false;
+      c.allBtnEl.disabled = false;
+      expectedTotal += c.total;
+
+      if (c.present === null){
+        if (!fromTyping || document.activeElement !== input) input.value = "";
+        status.className = "pill";
+        status.textContent = "Awaiting count";
+        row.classList.remove("is-done");
+        c.minusEl.disabled = false; c.plusEl.disabled = false;
+        c.allBtnEl.disabled = false;
+      } else {
+        var v = c.present;
+        if (document.activeElement !== input) input.value = String(v);
+        reported++;
+        presentTotal += Math.min(Math.max(v,0), c.total);
+        if (v > c.total){
+          status.className = "pill err";
+          status.textContent = "Over class size — max " + c.total;
+          row.classList.remove("is-done");
+        } else if (v === c.total){
+          status.className = "pill ok";
+          status.textContent = "All present";
+          row.classList.add("is-done");
+        } else {
+          absentTotal += (c.total - v);
+          status.className = "pill short";
+          status.textContent = (c.total - v) + " absent";
+          row.classList.remove("is-done");
+        }
+        c.minusEl.disabled = v <= 0;
+        c.plusEl.disabled = v >= c.total;
+        c.allBtnEl.disabled = v === c.total;
+      }
+    });
+
+    var sc = sessionClasses();
+    var ncCount = CLASSES.length - sc.length;
+    document.getElementById("statPresent").textContent = presentTotal;
+    document.getElementById("statExpected").textContent = expectedTotal;
+    document.getElementById("statReported").textContent = reported;
+    document.getElementById("statReportedTotal").textContent = sc.length;
+    document.getElementById("statAbsent").textContent = reported === 0 ? "—" : String(absentTotal);
+    var pct = sc.length ? Math.round(reported / sc.length * 100) : 0;
+    document.getElementById("progressBar").style.width = pct + "%";
+    document.getElementById("sessionCount").textContent =
+      sc.length + (sc.length === 1 ? " class" : " classes") + " · " + expectedTotal + (expectedTotal === 1 ? " student" : " students");
+    document.getElementById("noclassCount").textContent =
+      ncCount + (ncCount === 1 ? " class" : " classes");
+
+    var missing = sc.filter(function(c){ return c.present === null; }).map(displayName);
+    var note = document.getElementById("dashNote");
+    if (CLASSES.length === 0){
+      note.textContent = "No classes on the list — add one below.";
+    } else if (reported === 0 && sc.length){
+      note.textContent = "No classes reported yet — start with your class below.";
+    } else if (missing.length === 0 && sc.length){
+      note.innerHTML = "";
+      note.appendChild(el("strong","","All classes reported. "));
+      note.appendChild(document.createTextNode(absentTotal === 0
+        ? "Everyone accounted for — copy the summary below."
+        : absentTotal + (absentTotal === 1 ? " student" : " students") + " absent. Copy the summary below."));
+    } else if (missing.length === 0){
+      note.textContent = "No classes in session.";
+    } else {
+      note.innerHTML = "";
+      note.appendChild(document.createTextNode("Still waiting on: "));
+      note.appendChild(el("strong","", missing.join(", ")));
+    }
+
+    reportEl.textContent = buildReport(presentTotal, expectedTotal, reported, absentTotal, missing);
+  }
+
+  function buildReport(presentTotal, expectedTotal, reported, absentTotal, missing){
+    var lines = [];
+    lines.push("Fire drill attendance — " + new Date().toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" }));
+    lines.push("");
+    CLASSES.forEach(function(c){
+      var name = displayName(c);
+      if (c.isNoClass){
+        lines.push(name + " – 0/" + c.total + " (" + (c.note || "no class") + ")");
+      } else if (c.present === null){
+        lines.push(name + " – /" + c.total + " (not reported yet)");
+      } else {
+        var extra = "";
+        if (c.present > c.total) extra = " — please check, over class size";
+        else if (c.present < c.total) extra = " (" + (c.total - c.present) + " absent)";
+        lines.push(name + " – " + c.present + "/" + c.total + extra);
+      }
+    });
+    lines.push("");
+    lines.push("Total present: " + presentTotal + "/" + expectedTotal + " (classes in session)");
+    if (reported > 0) lines.push("Absent so far: " + absentTotal);
+    if (missing.length) lines.push("Not reported yet: " + missing.join(", "));
+    else if (sessionClasses().length) lines.push("All classes reported.");
+    return lines.join("\n");
+  }
+
+  document.getElementById("addClassBtn").addEventListener("click", function(){
+    var nc = { id:++uid, code:"", total:30, noClass:false, note:"", present:null, isNoClass:false };
+    CLASSES.push(nc);
+    buildRow(nc);
+    renderLists();
+    refresh();
+    nc.nameEl.focus();
+    showToast("Class added — type its name and set its size.");
+  });
+  document.getElementById("allPresentBtn").addEventListener("click", function(){
+    CLASSES.forEach(function(c){ if (!c.isNoClass) c.present = c.total; });
+    refresh();
+    showToast("All in-session classes marked fully present.");
+  });
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    CLASSES.forEach(function(c){ if (!c.isNoClass) c.present = null; });
+    refresh();
+    showToast("Counts cleared.");
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var text = reportEl.textContent;
+    function done(){ showToast("Copied — now paste it into the group chat."); }
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); done(); }
+      catch(e){ showToast("Copy didn't work — long-press the summary to copy it."); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+  });
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 3200);
+  }
+
+  renderLists();
+  refresh();
+})();
+</script>
+</body>
+</html>
