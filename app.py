@@ -1,11 +1,11 @@
-"""Fire Drill Attendance app, served inside Streamlit.
+"""Fire Drill Attendance — Phase 1, served inside Streamlit.
 
-The attendance UI itself is the original single-file HTML/JS app
-(fire-drill-attendance.html). Streamlit only wraps it, so the app keeps its
-editable class names, add/remove classes, editable student totals per class,
-No class toggles, dashboard totals, absent counts and copyable summary
-exactly as built.
-Counts live in the browser, just like the original app.
+The UI itself is the Phase 1 single-file HTML/JS app
+(fire-drill-attendance.html): teacher headcount, student self-report
+and coordinator dashboard. Streamlit only wraps it.
+Until a Google Apps Script backend URL is set in the app Settings,
+it runs in demo mode (local only, not shared). With a URL set, it
+reads/writes the shared Google Sheet via that bridge.
 """
 
 from pathlib import Path
